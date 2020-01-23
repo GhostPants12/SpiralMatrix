@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MatrixManipulations
 {
@@ -27,7 +27,38 @@ namespace MatrixManipulations
         /// </example>
         public static int[,] GetMatrix(int size)
         {
-            throw new NotImplementedException("You need to implement this function.");
+            if (size <= 0)
+            {
+                throw new ArgumentException($"Size of matrix '{size}' cannot be less or equal zero.");
+            }
+
+            int[,] matrix = new int[size, size];
+
+            int row = 0;
+            int col = 0;
+            int dx = 1;
+            int dy = 0;
+            int dirChanges = 0;
+            int visits = size;
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                matrix[row, col] = i + 1;
+                visits--;
+                if (visits == 0)
+                {
+                    visits = (size * (dirChanges % 2)) + (size * ((dirChanges + 1) % 2)) - (dirChanges / 2) - 1;
+                    int temp = dx;
+                    dx = -dy;
+                    dy = temp;
+                    dirChanges++;
+                }
+
+                col += dx;
+                row += dy;
+            }
+
+            return matrix;
         }
     }
 }
